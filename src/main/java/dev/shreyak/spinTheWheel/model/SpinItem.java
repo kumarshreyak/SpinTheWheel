@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-public record Pokemon(
+public record SpinItem(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         Integer id,

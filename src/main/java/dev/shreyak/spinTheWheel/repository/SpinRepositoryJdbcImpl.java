@@ -1,6 +1,6 @@
 package dev.shreyak.spinTheWheel.repository;
 
-import dev.shreyak.spinTheWheel.model.Pokemon;
+import dev.shreyak.spinTheWheel.model.SpinItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,17 +13,17 @@ import java.util.Optional;
 
 @Repository
 @Primary
-public class PokemonRepositoryJdbcImpl implements PokemonRepository{
+public class SpinRepositoryJdbcImpl implements SpinRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PokemonRepositoryJdbcImpl(JdbcTemplate jdbcTemplate) {
+    public SpinRepositoryJdbcImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static Pokemon mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new Pokemon(
+    private static SpinItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new SpinItem(
                 rs.getInt("id"),
                 rs.getString("name"),
                 rs.getString("url")
@@ -31,32 +31,32 @@ public class PokemonRepositoryJdbcImpl implements PokemonRepository{
     }
 
     @Override
-    public void addPokemon(Pokemon pokemon) {
+    public void addPokemon(SpinItem spinItem) {
         String sql = "INSERT INTO Pokemon(id, name, url) values (?, ?, ?)";
-        jdbcTemplate.update(sql, pokemon.id(), pokemon.name(), pokemon.url());
+        jdbcTemplate.update(sql, spinItem.id(), spinItem.name(), spinItem.url());
     }
 
     @Override
-    public List<Pokemon> getAllPokemon() {
+    public List<SpinItem> getAllPokemon() {
         String sql = "SELECT * FROM Pokemon";
-        return jdbcTemplate.query(sql, PokemonRepositoryJdbcImpl::mapRow);
+        return jdbcTemplate.query(sql, SpinRepositoryJdbcImpl::mapRow);
     }
 
     @Override
-    public Optional<Pokemon> getPokemonById(Integer id) {
+    public Optional<SpinItem> getPokemonById(Integer id) {
         String sql = "SELECT * FROM Pokemon WHERE id=?";
-        List<Pokemon> pokemons = jdbcTemplate.query(sql, PokemonRepositoryJdbcImpl::mapRow, id);
-        if(pokemons != null && !pokemons.isEmpty()) {
-            return Optional.of(pokemons.get(0));
+        List<SpinItem> spinItems = jdbcTemplate.query(sql, SpinRepositoryJdbcImpl::mapRow, id);
+        if(spinItems != null && !spinItems.isEmpty()) {
+            return Optional.of(spinItems.get(0));
         } else {
             return Optional.empty();
         }
     }
 
     @Override
-    public void updatePokemon(Pokemon pokemon) {
+    public void updatePokemon(SpinItem spinItem) {
         String sql = "UPDATE Pokemon set id=?, name=?, url=? where id=?";
-        jdbcTemplate.update(sql, pokemon.id(), pokemon.name(), pokemon.url(), pokemon.id());
+        jdbcTemplate.update(sql, spinItem.id(), spinItem.name(), spinItem.url(), spinItem.id());
     }
 
     @Override
