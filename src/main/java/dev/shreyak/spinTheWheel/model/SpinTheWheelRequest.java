@@ -1,14 +1,15 @@
 package dev.shreyak.spinTheWheel.model;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpinTheWheelRequest {
-    String wheelId;
-    String participantId;
+    @NotEmpty
+    private String wheelId;
+    private String participantId;
 }
