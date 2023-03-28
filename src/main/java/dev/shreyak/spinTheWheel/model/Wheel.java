@@ -1,8 +1,11 @@
 package dev.shreyak.spinTheWheel.model;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,18 +20,25 @@ import java.util.Map;
 @Document("wheel")
 public class Wheel {
         @Id
-        public String id;
+        private String id;
 
-        public String name;
+        private String name;
 
-        @Field("start_date")
-        public LocalDateTime startDate;
+        @CreatedDate
+        private LocalDateTime createdDate;
 
-        @Field("end_date")
-        public LocalDateTime endDate;
 
-        public Integer numOfWinners;
-        public List<SpinItem> spinItems;
-        public Map<Integer, Long> spinItemCounts;
-        public List<Participant> participants;
+        @NotEmpty
+        private String startDate;
+
+
+        @NotEmpty
+        private String endDate;
+
+        @NotNull
+        private Integer numOfWinners;
+        @NotEmpty
+        private List<SpinItem> spinItems;
+        private Map<Integer, Long> spinItemCounts;
+        private List<Participant> participants;
 }
