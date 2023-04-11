@@ -40,5 +40,6 @@ public class Wheel {
         @NotEmpty
         private List<SpinItem> spinItems;
         private Map<Integer, Long> spinItemCounts;
-        private List<Participant> participants;
+        @NotEmpty
+        private List<String> participantIds;
 }

@@ -1,5 +1,8 @@
 package dev.shreyak.spinTheWheel.controller;
 
+import dev.shreyak.spinTheWheel.model.Participant;
+import dev.shreyak.spinTheWheel.model.UpdateParticipantRequest;
+import dev.shreyak.spinTheWheel.model.UpdateParticipantResponse;
 import dev.shreyak.spinTheWheel.model.Wheel;
 import dev.shreyak.spinTheWheel.repository.WheelRepository;
 import dev.shreyak.spinTheWheel.util.BadRequestException;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/wheel/")
@@ -51,9 +55,54 @@ public class WheelController {
         }
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/delete")
     public void delete(@Valid @RequestBody String wheelId) {
         wheelRepository.deleteById(wheelId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/addParticipants")
+    public void addParticipants(@Valid @RequestBody UpdateParticipantRequest request) throws BadRequestException {
+        Wheel wheel = wheelRepository.findById(request.getWheelId()).orElse(null);
+        if(wheel == null) {
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(),
+                    "Wheel not found");
+        }
+        List<String> participantList = wheel.getParticipantIds();
+        participantList.addAll(request.getParticipantIds());
+        wheel.setParticipantIds(participantList);
+
+        wheelRepository.save(wheel);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/removeParticipants")
+    public void removeParticipants(@Valid @RequestBody UpdateParticipantRequest request) throws BadRequestException {
+        Wheel wheel = wheelRepository.findById(request.getWheelId()).orElse(null);
+        if(wheel == null) {
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(),
+                    "Wheel not found");
+        }
+        List<String> participantList = wheel.getParticipantIds();
+        participantList.removeAll(request.getParticipantIds());
+        wheel.setParticipantIds(participantList);
+
+        wheelRepository.save(wheel);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/updateParticipants")
+    public void updateParticipants(@Valid @RequestBody UpdateParticipantRequest request) throws BadRequestException {
+        Wheel wheel = wheelRepository.findById(request.getWheelId()).orElse(null);
+        if(wheel == null) {
+            throw new BadRequestException(HttpStatus.BAD_REQUEST.value(),
+                    "Wheel not found");
+        }
+        List<String> participantList = wheel.getParticipantIds();
+        participantList.removeAll(request.getParticipantIds());
+        wheel.setParticipantIds(participantList);
+
+        wheelRepository.save(wheel);
     }
 }
