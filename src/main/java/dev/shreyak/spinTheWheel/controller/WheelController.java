@@ -5,9 +5,11 @@ import dev.shreyak.spinTheWheel.model.Wheel;
 import dev.shreyak.spinTheWheel.service.WheelService;
 import dev.shreyak.spinTheWheel.util.BadRequestException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/wheel/")
 public class WheelController {
@@ -26,6 +28,12 @@ public class WheelController {
     @PostMapping("/create")
     public void create(@Valid @RequestBody Wheel wheel) throws BadRequestException {
         wheelService.create(wheel);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/get/{id}")
+    public Wheel get(@PathVariable(name = "id") String wheelId) throws Exception {
+        return wheelService.get(wheelId);
     }
 
     @ResponseStatus(HttpStatus.OK)

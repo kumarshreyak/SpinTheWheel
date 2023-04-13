@@ -7,6 +7,8 @@ import dev.shreyak.spinTheWheel.util.BadRequestException;
 public interface WheelService {
     public void create(Wheel wheel) throws BadRequestException;
 
+    public Wheel get(String wheelId) throws Exception;
+
     public void delete(String wheelId);
 
 
