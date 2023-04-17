@@ -1,7 +1,5 @@
 package dev.shreyak.spinTheWheel.service;
 
-import dev.shreyak.spinTheWheel.model.UpdateParticipantRequest;
-import dev.shreyak.spinTheWheel.model.Wheel;
 import dev.shreyak.spinTheWheel.util.BadRequestException;
 
 public interface WheelService {

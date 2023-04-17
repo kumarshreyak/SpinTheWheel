@@ -1,9 +1,7 @@
 package dev.shreyak.spinTheWheel.service;
 
-import dev.shreyak.spinTheWheel.model.UpdateParticipantRequest;
-import dev.shreyak.spinTheWheel.model.Wheel;
 import dev.shreyak.spinTheWheel.repository.WheelRepository;
-import dev.shreyak.spinTheWheel.service.cache.CacheService;
+import dev.shreyak.spinTheWheel.script.cache.CacheService;
 import dev.shreyak.spinTheWheel.util.BadRequestException;
 import dev.shreyak.spinTheWheel.validators.WheelValidator;
 import lombok.extern.slf4j.Slf4j;

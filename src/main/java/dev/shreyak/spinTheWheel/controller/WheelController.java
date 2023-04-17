@@ -1,7 +1,5 @@
 package dev.shreyak.spinTheWheel.controller;
 
-import dev.shreyak.spinTheWheel.model.UpdateParticipantRequest;
-import dev.shreyak.spinTheWheel.model.Wheel;
 import dev.shreyak.spinTheWheel.service.WheelService;
 import dev.shreyak.spinTheWheel.util.BadRequestException;
 import jakarta.validation.Valid;

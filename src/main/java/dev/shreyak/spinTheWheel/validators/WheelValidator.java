@@ -1,6 +1,5 @@
 package dev.shreyak.spinTheWheel.validators;
 
-import dev.shreyak.spinTheWheel.model.Wheel;
 import dev.shreyak.spinTheWheel.util.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

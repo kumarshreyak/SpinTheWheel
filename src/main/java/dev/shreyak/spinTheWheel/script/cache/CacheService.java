@@ -1,4 +1,4 @@
-package dev.shreyak.spinTheWheel.service.cache;
+package dev.shreyak.spinTheWheel.script.cache;
 
 import java.util.concurrent.TimeUnit;
 
