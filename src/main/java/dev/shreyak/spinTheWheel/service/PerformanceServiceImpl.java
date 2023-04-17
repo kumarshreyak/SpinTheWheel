@@ -2,6 +2,7 @@ package dev.shreyak.spinTheWheel.service;
 
 import dev.shreyak.spinTheWheel.model.Inning;
 import dev.shreyak.spinTheWheel.model.Match;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class PerformanceServiceImpl implements PerformanceSummaryService {
 
@@ -78,6 +80,7 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
 
     public String getPerformanceSummaryAllStadiums(String batsman, String bowler) {
         // Find all matches in the collection
+        log.info(batsman + ",  " + bowler);
         List<Match> matches = mongoTemplate.findAll(Match.class);
         if (matches.isEmpty()) {
             return "No matches found in database";
