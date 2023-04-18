@@ -17,7 +17,7 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
     @Autowired
     private MatchDao matchDao;
 
-
+    @Override
     public String getPerformanceSummary(String batsman, String bowler, String stadium) {
         // Find the match based on the stadium
 //        Query query = new Query(Criteria.where("info.venue").is(stadium));
@@ -27,7 +27,7 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
             return "No matches found in stadium " + stadium;
         }
         StringBuilder summary = new StringBuilder();
-        for(Match match : matches) {
+        for (Match match : matches) {
             // Determine which team batted first
             String firstBattingTeam = match.getInfo().getToss().getWinner();
             Inning firstInnings = match.getInnings().get(0);
@@ -81,6 +81,7 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
         return summary.toString();
     }
 
+    @Override
     public String getPerformanceSummaryAllStadiums(String batsman, String bowler) {
         // Find all matches in the collection
         log.info(batsman + ",  " + bowler);
@@ -97,7 +98,7 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
         for (Match match : matches) {
             // Determine which team batted first
             String firstBattingTeam = match.getInfo().getToss().getWinner();
-            if(match.getInnings().isEmpty() || match.getInnings().size() < 2) {
+            if (match.getInnings().isEmpty() || match.getInnings().size() < 2) {
                 continue;
             }
             Inning firstInnings = match.getInnings().get(0);
@@ -139,6 +140,76 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
 
         if (wickets > 0) {
             summary.append(", got out " + wickets + " time(s)");
+        }
+
+        return summary.toString();
+    }
+
+    @Override
+    public String getPerformanceSummaryAllStadiums(String[] team1, String[] team2) {
+        int runs = 0;
+        int balls = 0;
+        int wickets = 0;
+        StringBuilder summary = new StringBuilder();
+
+        for (String batsman : team1) {
+            for (String bowler : team2) {
+                // Find all matches in the collection where the batsman played against the bowler
+                List<Match> matches = matchDao.findByBatsmanAndBowler(batsman, bowler);
+
+                if (matches.isEmpty()) {
+//                    summary.append("No matches found in database where " + batsman + " played against " + bowler + "\n");
+                } else {
+                    for (Match match : matches) {
+                        // Determine which team batted first
+                        String firstBattingTeam = match.getInfo().getToss().getWinner();
+                        if (match.getInnings().isEmpty() || match.getInnings().size() < 2) {
+                            continue;
+                        }
+                        Inning firstInnings = match.getInnings().get(0);
+                        Inning secondInnings = match.getInnings().get(1);
+
+                        // Determine which team the batsman plays for
+                        String batsmanTeam = match.getInfo().getRegistry().getTeamByPlayer(batsman);
+                        if (batsmanTeam == null) {
+                            continue;
+                        }
+
+                        // Determine which innings to search for the batsman's runs against the particular bowler
+                        Inning batsmanInnings = null;
+                        if (firstBattingTeam.equals(batsmanTeam)) {
+                            batsmanInnings = firstInnings;
+                        } else {
+                            batsmanInnings = secondInnings;
+                        }
+
+                        // Search for the batsman's runs against the particular bowler in the appropriate innings
+                        List<Delivery> deliveries = batsmanInnings.getDeliveries();
+                        for (Delivery delivery : deliveries) {
+                            if (delivery.getBatter().equals(batsman) && delivery.getBowler().equals(bowler)) {
+                                runs += delivery.getRuns().getBatter();
+                                balls++;
+                                if (delivery.getWickets() != null) {
+                                    wickets += delivery.getWickets().size();
+                                }
+                            }
+                        }
+                    }
+                    if (balls == 0) {
+//                        summary.append("Batsman " + batsman + " did not face " + bowler + " in any stadium\n");
+                    } else {
+                        summary.append("Batsman " + batsman + " scored " + runs + " runs off " + balls + " balls against " + bowler + " in all stadiums combined");
+                        if (wickets > 0) {
+                            summary.append(", got out " + wickets + " time(s)\n");
+                        } else {
+                            summary.append("\n");
+                        }
+                    }
+                    runs = 0;
+                    balls = 0;
+                    wickets = 0;
+                }
+            }
         }
 
         return summary.toString();
