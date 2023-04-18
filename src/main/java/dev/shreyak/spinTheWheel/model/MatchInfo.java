@@ -28,37 +28,4 @@ public class MatchInfo {
     private Officials officials;
     private Map<String, List<String>> players;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class Toss {
-        private String decision;
-        private boolean uncontested;
-        private String winner;
-    }
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class Registry {
-        private Map<String, String> people;
-
-        public String getTeamByPlayer(String player) {
-            if (people.containsKey(player)) {
-                return people.get(player);
-            } else {
-                return null;
-            }
-        }
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class Officials {
-        private List<String> matchReferees;
-        private List<String> reserveUmpires;
-        private List<String> tvUmpires;
-        private List<String> umpires;
-    }
-
 }
