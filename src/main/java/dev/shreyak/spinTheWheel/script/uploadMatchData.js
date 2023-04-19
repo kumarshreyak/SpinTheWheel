@@ -62,7 +62,7 @@ async function run() {
       const fileContent = await readJsonFile(filePath);
       documents.push(fileContent);
     }
-    await insertDocuments(client, "CricketDB", "Matches", documents);
+    await insertDocuments(client, "CricketDB", "IPL2023", documents);
   } finally {
     // Close the MongoDB client connection
     await client.close();

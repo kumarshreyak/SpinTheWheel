@@ -1,6 +1,7 @@
 package dev.shreyak.spinTheWheel.controller;
 
 
+import dev.shreyak.spinTheWheel.model.PlayerPerformanceRequest;
 import dev.shreyak.spinTheWheel.model.TeamPerformanceRequest;
 import dev.shreyak.spinTheWheel.service.PerformanceSummaryService;
 import jakarta.validation.Valid;
@@ -24,5 +25,21 @@ public class PerformanceController {
     @PostMapping("/performance/team")
     public String getTeamPerformanceSummaryAllStadiums(@Valid @RequestBody TeamPerformanceRequest request) {
         return performanceSummaryService.getPerformanceSummaryAllStadiums(request.getTeam1(), request.getTeam2());
+    }
+
+    @PostMapping("/performance/batsman")
+    public String getBatsmanPerformanceSummary(@Valid @RequestBody PlayerPerformanceRequest request) {
+        return performanceSummaryService.getSummaryForBatsman(request.getPlayers(),
+                request.getVenue(),
+                request.getType(),
+                request.getAfterDate());
+    }
+
+    @PostMapping("/performance/bowler")
+    public String getBowlerPerformanceSummary(@Valid @RequestBody PlayerPerformanceRequest request) {
+        return performanceSummaryService.getSummaryForBowler(request.getPlayers(),
+                request.getVenue(),
+                request.getType(),
+                request.getAfterDate());
     }
 }
