@@ -152,37 +152,36 @@ public class Match {
         }
 
         double economyRate = (double) totalRunsConceded / (totalBallsBowled / 6f);
-        double wicketRate = totalWicketsTaken == 0 ? 0 : (double) totalBallsBowled / totalWicketsTaken;
+        double wicketRate = totalWicketsTaken == 0 ? 0 : (double) totalWicketsTaken / totalBallsBowled;
 
-        StringBuilder sb = new StringBuilder("Bowler Summary: ");
-        sb.append("Bowler: " + bowler);
-        sb.append(", Date: " + String.join(", ", match.info.getDates()));
-        sb.append(", Venue: " + match.info.getVenue());
-        sb.append(",  Balls Bowled: " + totalBallsBowled);
-        sb.append(",  Runs Conceded: " + totalRunsConceded);
-        sb.append(",  Wickets Taken: " + totalWicketsTaken);
-        sb.append(",  Dot Balls: " + totalDotBalls);
-        sb.append(",  Boundaries: " + totalBoundaries);
-        sb.append(",  Sixes: " + totalSixes);
+        StringBuilder sb = new StringBuilder(String.join(", ", match.info.getDates()));
+        sb.append(", " + bowler);
+        sb.append(", " + match.info.getVenue());
+//        sb.append(",  Balls Bowled: " + totalBallsBowled);
+//        sb.append(",  Runs Conceded: " + totalRunsConceded);
+        sb.append(",  Wickets:" + totalWicketsTaken);
+        sb.append(",  Dots: " + totalDotBalls);
+        sb.append(",  Boundaries: " + (totalBoundaries + totalSixes));
+//        sb.append(",  Sixes: " + totalSixes);
         sb.append(",  Extras: " + totalExtras);
-        sb.append(", Economy Rate: " + String.format("%.2f", economyRate));
-        sb.append(", Wicket Rate: " + String.format("%.2f", wicketRate));
+        sb.append(", ER: " + String.format("%.2f", economyRate));
+        sb.append(", Wicket per ball: " + String.format("%.2f", wicketRate));
 
         // Determine strong and weak points of the bowler
-        sb.append(", Strong Points: ");
+        sb.append(", Pros: ");
         if (totalDotBalls > (totalBallsBowled * 0.5)) {
-            sb.append("High number of dot balls; ");
+            sb.append("High dot balls; ");
         }
         if (totalWicketsTaken >= 3) {
-            sb.append("Wicket-taking ability; ");
+            sb.append("High Wickets; ");
         }
 
-        sb.append(", Weak Points: ");
+        sb.append(", Cons: ");
         if (economyRate > 8) {
-            sb.append("High economy rate; ");
+            sb.append("High ER; ");
         }
         if (totalExtras > (totalBallsBowled * 0.1)) {
-            sb.append("Conceding too many extras; ");
+            sb.append("Too many extras; ");
         }
 
         return sb.toString();
@@ -249,33 +248,32 @@ public class Match {
 
         double strikeRate = (double) totalRunsScored / totalBallsFaced * 100;
 
-        StringBuilder sb = new StringBuilder("Batsman Summary: ");
-        sb.append("Batsman: " + batsman);
-        sb.append(", Date: " + String.join(", ", match.info.getDates()));
-        sb.append(", Venue: " + match.info.getVenue());
+        StringBuilder sb = new StringBuilder(String.join(", ", match.info.getDates()));
+        sb.append(", " + batsman);
+        sb.append(" at " + match.info.getVenue());
         sb.append(", In at over: " + inAtOver);
-        sb.append(", Runs: " + totalRunsScored);
-        sb.append(", Balls: " + totalBallsFaced);
+//        sb.append(", Runs: " + totalRunsScored);
+//        sb.append(", Balls: " + totalBallsFaced);
         sb.append(", Boundaries: " + (totalBoundaries + totalSixes));
 //        sb.append(", Sixes: " + totalSixes);
 //        sb.append(", Singles: " + totalSingles);
 //        sb.append(", Twos: " + totalTwos);
 //        sb.append(", Threes: " + totalThrees);
-        sb.append(", Strike Rate: " + String.format("%.2f", strikeRate));
+        sb.append(", SR: " + String.format("%.2f", strikeRate));
         sb.append(", Dismissal: " + (isOut ? "Out" : "Not Out"));
 
         // Determine strong and weak points of the batsman
-        sb.append(", Strong Points: ");
+        sb.append(", Pros: ");
         if (strikeRate > 130) {
-            sb.append("High strike rate; ");
+            sb.append("High SR; ");
         }
         if (totalBoundaries + totalSixes > (totalBallsFaced * 0.4)) {
-            sb.append("Boundary-hitting ability; ");
+            sb.append("High Boundaries; ");
         }
 
-        sb.append(", Weak Points: ");
+        sb.append(", Cons: ");
         if (strikeRate < 70) {
-            sb.append("Low strike rate; ");
+            sb.append("Low SR; ");
         }
         if (totalSingles < (totalBallsFaced * 0.5)) {
             sb.append("Low singles rotation; ");
