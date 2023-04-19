@@ -156,6 +156,7 @@ public class Match {
 
         StringBuilder sb = new StringBuilder("Bowler Summary: ");
         sb.append("Bowler: " + bowler);
+        sb.append(", Date: " + String.join(", ", match.info.getDates()));
         sb.append(", Venue: " + match.info.getVenue());
         sb.append(",  Balls Bowled: " + totalBallsBowled);
         sb.append(",  Runs Conceded: " + totalRunsConceded);
@@ -196,6 +197,8 @@ public class Match {
         int totalTwos = 0;
         int totalThrees = 0;
         boolean isOut = false;
+        int inAtOver = 0;
+        boolean isFirstBallFaced = true;
 
         if (match.getInnings() == null || match.getInnings().isEmpty()) {
             return "";
@@ -205,6 +208,10 @@ public class Match {
             for (Over over : inning.getOvers()) {
                 for (Delivery delivery : over.getDeliveries()) {
                     if (delivery.getBatter().equals(batsman)) {
+                        if (isFirstBallFaced) {
+                            inAtOver = over.getOver();
+                            isFirstBallFaced = false;
+                        }
                         totalBallsFaced++;
                         if (delivery.getRuns() != null) {
                             int runs = delivery.getRuns().getBatter();
@@ -244,14 +251,16 @@ public class Match {
 
         StringBuilder sb = new StringBuilder("Batsman Summary: ");
         sb.append("Batsman: " + batsman);
+        sb.append(", Date: " + String.join(", ", match.info.getDates()));
         sb.append(", Venue: " + match.info.getVenue());
-        sb.append(", Runs Scored: " + totalRunsScored);
-        sb.append(", Balls Faced: " + totalBallsFaced);
-        sb.append(", Boundaries: " + totalBoundaries);
-        sb.append(", Sixes: " + totalSixes);
-        sb.append(", Singles: " + totalSingles);
-        sb.append(", Twos: " + totalTwos);
-        sb.append(", Threes: " + totalThrees);
+        sb.append(", In at over: " + inAtOver);
+        sb.append(", Runs: " + totalRunsScored);
+        sb.append(", Balls: " + totalBallsFaced);
+        sb.append(", Boundaries: " + (totalBoundaries + totalSixes));
+//        sb.append(", Sixes: " + totalSixes);
+//        sb.append(", Singles: " + totalSingles);
+//        sb.append(", Twos: " + totalTwos);
+//        sb.append(", Threes: " + totalThrees);
         sb.append(", Strike Rate: " + String.format("%.2f", strikeRate));
         sb.append(", Dismissal: " + (isOut ? "Out" : "Not Out"));
 

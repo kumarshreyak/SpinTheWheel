@@ -180,27 +180,23 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
 
         for(String bowler: bowlers) {
             List<Match> matches = new ArrayList<>();
-            switch (type) {
-                case TYPE_IPL: {
-                    if (venue != null && !venue.isBlank()) {
-                        matches = matchDao.findByBowlerAndVenueInIPL(bowler, venue, afterDate);
-                    } else {
-                        matches = matchDao.findByBowlerInIPL(bowler, afterDate);
-                    }
+            if (TYPE_IPL.equals(type)) {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByBowlerAndVenueInIPL(bowler, venue, afterDate);
+                } else {
+                    matches = matchDao.findByBowlerInIPL(bowler, afterDate);
                 }
-                case TYPE_T20: {
-                    if (venue != null && !venue.isBlank()) {
-                        matches = matchDao.findByBowlerAndVenueInT20(bowler, venue, afterDate);
-                    } else {
-                        matches = matchDao.findByBowlerInT20(bowler, afterDate);
-                    }
+            } else if (TYPE_T20.equals(type)) {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByBowlerAndVenueInT20(bowler, venue, afterDate);
+                } else {
+                    matches = matchDao.findByBowlerInT20(bowler, afterDate);
                 }
-                default: {
-                    if (venue != null && !venue.isBlank()) {
-                        matches = matchDao.findByBowlerAndVenueInT20(bowler, venue, afterDate);
-                    } else {
-                        matches = matchDao.findByBowlerInT20(bowler, afterDate);
-                    }
+            } else {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByBowlerAndVenueInT20(bowler, venue, afterDate);
+                } else {
+                    matches = matchDao.findByBowlerInT20(bowler, afterDate);
                 }
             }
 
@@ -220,27 +216,23 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
         StringBuilder summary = new StringBuilder();
         for (String batsman : batsmen) {
             List<Match> matches = new ArrayList<>();
-            switch (type) {
-                case TYPE_IPL: {
-                    if (venue != null && !venue.isBlank()) {
-                        matches = matchDao.findByBatsmanAndVenueInIPL(batsman, venue, afterDate);
-                    } else {
-                        matches = matchDao.findByBatsmanInIPL(batsman, afterDate);
-                    }
+            if (TYPE_IPL.equals(type)) {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByBatsmanAndVenueInIPL(batsman, venue, afterDate);
+                } else {
+                    matches = matchDao.findByBatsmanInIPL(batsman, afterDate);
                 }
-                case TYPE_T20: {
-                    if (venue != null && !venue.isBlank()) {
-                        matches = matchDao.findByBatsmanAndVenueInT20(batsman, venue, afterDate);
-                    } else {
-                        matches = matchDao.findByBatsmanInT20(batsman, afterDate);
-                    }
+            } else if (TYPE_T20.equals(type)) {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByBatsmanAndVenueInT20(batsman, venue, afterDate);
+                } else {
+                    matches = matchDao.findByBatsmanInT20(batsman, afterDate);
                 }
-                default: {
-                    if (venue != null && !venue.isBlank()) {
-                        matches = matchDao.findByBatsmanAndVenueInT20(batsman, venue, afterDate);
-                    } else {
-                        matches = matchDao.findByBatsmanInT20(batsman, afterDate);
-                    }
+            } else {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByBatsmanAndVenueInT20(batsman, venue, afterDate);
+                } else {
+                    matches = matchDao.findByBatsmanInT20(batsman, afterDate);
                 }
             }
 
