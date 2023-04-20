@@ -11,21 +11,13 @@ public interface MatchDao {
 
     List<Match> findByBatsmanAndBowler(String batsman, String bowler);
 
-    List<Match> findByBowlerAndVenueInT20(String bowler, String venue, String afterDate);
+    List<Match> findByPlayerAndVenueInT20(String player, String venue, String afterDate);
 
-    List<Match> findByBowlerAndVenueInIPL(String bowler, String venue, String afterDate);
+    List<Match> findByPlayerAndVenueInIPL(String player, String venue, String afterDate);
 
-    List<Match> findByBowlerInT20(String bowler, String afterDate);
+    List<Match> findByPlayerInT20(String player, String afterDate);
 
-    List<Match> findByBowlerInIPL(String bowler, String afterDate);
-
-    List<Match> findByBatsmanInIPL(String batsman, String afterDate);
-
-    List<Match> findByBatsmanAndVenueInT20(String batsman, String venue, String afterDate);
-
-    List<Match> findByBatsmanAndVenueInIPL(String batsman, String venue, String afterDate);
-
-    List<Match> findByBatsmanInT20(String batsman, String afterDate);
+    List<Match> findByPlayerInIPL(String player, String afterDate);
 
 
     List<Match> findMatchesByBatsmanAndBowlerAndVenue(String batsman, String bowler, String venue);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static dev.shreyak.spinTheWheel.model.PlayerPerformanceRequest.TYPE_IPL;
@@ -182,21 +183,21 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
             List<Match> matches = new ArrayList<>();
             if (TYPE_IPL.equals(type)) {
                 if (venue != null && !venue.isBlank()) {
-                    matches = matchDao.findByBowlerAndVenueInIPL(bowler, venue, afterDate);
+                    matches = matchDao.findByPlayerAndVenueInIPL(bowler, venue, afterDate);
                 } else {
-                    matches = matchDao.findByBowlerInIPL(bowler, afterDate);
+                    matches = matchDao.findByPlayerInIPL(bowler, afterDate);
                 }
             } else if (TYPE_T20.equals(type)) {
                 if (venue != null && !venue.isBlank()) {
-                    matches = matchDao.findByBowlerAndVenueInT20(bowler, venue, afterDate);
+                    matches = matchDao.findByPlayerAndVenueInT20(bowler, venue, afterDate);
                 } else {
-                    matches = matchDao.findByBowlerInT20(bowler, afterDate);
+                    matches = matchDao.findByPlayerInT20(bowler, afterDate);
                 }
             } else {
                 if (venue != null && !venue.isBlank()) {
-                    matches = matchDao.findByBowlerAndVenueInT20(bowler, venue, afterDate);
+                    matches = matchDao.findByPlayerAndVenueInT20(bowler, venue, afterDate);
                 } else {
-                    matches = matchDao.findByBowlerInT20(bowler, afterDate);
+                    matches = matchDao.findByPlayerInT20(bowler, afterDate);
                 }
             }
 
@@ -218,27 +219,32 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
             List<Match> matches = new ArrayList<>();
             if (TYPE_IPL.equals(type)) {
                 if (venue != null && !venue.isBlank()) {
-                    matches = matchDao.findByBatsmanAndVenueInIPL(batsman, venue, afterDate);
+                    matches = matchDao.findByPlayerAndVenueInIPL(batsman, venue, afterDate);
                 } else {
-                    matches = matchDao.findByBatsmanInIPL(batsman, afterDate);
+                    matches = matchDao.findByPlayerInIPL(batsman, afterDate);
                 }
             } else if (TYPE_T20.equals(type)) {
                 if (venue != null && !venue.isBlank()) {
-                    matches = matchDao.findByBatsmanAndVenueInT20(batsman, venue, afterDate);
+                    matches = matchDao.findByPlayerAndVenueInT20(batsman, venue, afterDate);
                 } else {
-                    matches = matchDao.findByBatsmanInT20(batsman, afterDate);
+                    matches = matchDao.findByPlayerInT20(batsman, afterDate);
                 }
             } else {
                 if (venue != null && !venue.isBlank()) {
-                    matches = matchDao.findByBatsmanAndVenueInT20(batsman, venue, afterDate);
+                    matches = matchDao.findByPlayerAndVenueInT20(batsman, venue, afterDate);
                 } else {
-                    matches = matchDao.findByBatsmanInT20(batsman, afterDate);
+                    matches = matchDao.findByPlayerInT20(batsman, afterDate);
                 }
             }
-
+            matches.sort((o1, o2) -> o1.getInfo().getVenue().compareTo(o2.getInfo().getVenue()));
+            String stadium = "";
             for (Match match : matches) {
                 String temp = match.batsmanSummary(batsman, match);
                 if (temp.isBlank()) continue;
+                if(!match.getInfo().getVenue().equals(stadium)) {
+                    stadium = match.getInfo().getVenue();
+                    summary.append("Summary at " + stadium + ": \n");
+                }
                 summary.append(temp);
                 summary.append("\n");
             }
@@ -247,6 +253,68 @@ public class PerformanceServiceImpl implements PerformanceSummaryService {
 
         return summary.toString();
     }
+
+    @Override
+    public String getSummaryForPlayers(String players[], String venue, String type, String afterDate) {
+        StringBuilder summary = new StringBuilder();
+
+        for (String player : players) {
+            List<Match> matches = new ArrayList<>();
+            if (TYPE_IPL.equals(type)) {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByPlayerAndVenueInIPL(player, venue, afterDate);
+                } else {
+                    matches = matchDao.findByPlayerInIPL(player, afterDate);
+                }
+            } else if (TYPE_T20.equals(type)) {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByPlayerAndVenueInT20(player, venue, afterDate);
+                } else {
+                    matches = matchDao.findByPlayerInT20(player, afterDate);
+                }
+            } else {
+                if (venue != null && !venue.isBlank()) {
+                    matches = matchDao.findByPlayerAndVenueInT20(player, venue, afterDate);
+                } else {
+                    matches = matchDao.findByPlayerInT20(player, afterDate);
+                }
+            }
+
+            String stadium = "";
+            for (Match match : matches) {
+                boolean hasBatted = match.hasPlayerBatted(player);
+                boolean hasBowled = match.hasPlayerBowled(player);
+                String temp = "";
+
+                if (hasBatted) {
+                    temp = match.batsmanSummary(player, match);
+                    if (!temp.isBlank()) {
+                        summary.append(temp);
+                        summary.append("\n");
+                    }
+                }
+
+                if (hasBowled) {
+                    temp = match.bowlerSummary(player, match);
+                    if (!temp.isBlank()) {
+                        summary.append(temp);
+                        summary.append("\n");
+                    }
+                }
+
+                if (temp.isBlank()) continue;
+                if(!match.getInfo().getVenue().equals(stadium)) {
+                    if(!stadium.isBlank()) summary.append("@ ").append(stadium).append(": \n");
+                    stadium = match.getInfo().getVenue();
+                }
+                summary.append(temp);
+                summary.append("\n");
+            }
+        }
+
+        return summary.toString();
+    }
+
 
 }
 

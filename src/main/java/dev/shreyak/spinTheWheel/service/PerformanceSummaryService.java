@@ -12,4 +12,6 @@ public interface PerformanceSummaryService {
 
     public String getSummaryForBatsman(String[] batsmen, String venue, String type, String afterDate);
 
-}
+    public String getSummaryForPlayers(String players[], String venue, String type, String afterDate);
+
+    }

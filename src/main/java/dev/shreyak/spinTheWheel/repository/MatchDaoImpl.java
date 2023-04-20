@@ -36,65 +36,34 @@ public class MatchDaoImpl implements MatchDao {
     }
 
     @Override
-    public List<Match> findByBowlerInIPL(String bowler, String afterDate) {
+    public List<Match> findByPlayerInIPL(String player, String afterDate) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + bowler).exists(true)
+        query.addCriteria(Criteria.where("info.registry.people." + player).exists(true)
                 .and("info.dates").gte(afterDate));
         return mongoTemplate.find(query, Match.class, "IPL2023");
     }
 
-    @Override
-    public List<Match> findByBatsmanInIPL(String batsman, String afterDate) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + batsman).exists(true)
-                .and("info.dates").gte(afterDate));
-        return mongoTemplate.find(query, Match.class, "IPL2023");
-    }
 
     @Override
-    public List<Match> findByBatsmanAndVenueInT20(String batsman, String venue, String afterDate) {
+    public List<Match> findByPlayerInT20(String player, String afterDate) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + batsman).exists(true)
-                .and("info.dates").gt(afterDate).and("info.venue").is(venue));
-        return mongoTemplate.find(query, Match.class, "T20_2021");
-    }
-
-    @Override
-    public List<Match> findByBatsmanAndVenueInIPL(String batsman, String venue, String afterDate) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + batsman).exists(true)
-                .and("info.dates").gte(afterDate).and("info.venue").is(venue));
-        return mongoTemplate.find(query, Match.class, "IPL2023");
-    }
-
-    @Override
-    public List<Match> findByBatsmanInT20(String batsman, String afterDate) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + batsman).exists(true)
-                .and("info.dates").gte(afterDate));
-        return mongoTemplate.find(query, Match.class, "T20_2021");
-    }
-
-    @Override
-    public List<Match> findByBowlerInT20(String bowler, String afterDate) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + bowler).exists(true)
+        query.addCriteria(Criteria.where("info.registry.people." + player).exists(true)
                 .and("info.dates").gt(afterDate));
         return mongoTemplate.find(query, Match.class, "T20_2021");
     }
 
     @Override
-    public List<Match> findByBowlerAndVenueInIPL(String bowler, String venue, String afterDate) {
+    public List<Match> findByPlayerAndVenueInIPL(String player, String venue, String afterDate) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + bowler).exists(true)
+        query.addCriteria(Criteria.where("info.registry.people." + player).exists(true)
                 .and("info.dates").gt(afterDate).and("info.venue").is(venue));
         return mongoTemplate.find(query, Match.class, "IPL2023");
     }
 
     @Override
-    public List<Match> findByBowlerAndVenueInT20(String bowler, String venue, String afterDate) {
+    public List<Match> findByPlayerAndVenueInT20(String player, String venue, String afterDate) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("info.registry.people." + bowler).exists(true)
+        query.addCriteria(Criteria.where("info.registry.people." + player).exists(true)
                 .and("info.dates").gt(afterDate).and("info.venue").is(venue));
         return mongoTemplate.find(query, Match.class, "T20_2021");
     }

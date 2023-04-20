@@ -42,4 +42,12 @@ public class PerformanceController {
                 request.getType(),
                 request.getAfterDate());
     }
+
+    @PostMapping("/performance/players")
+    public String getPlayerPerformanceSummary(@Valid @RequestBody PlayerPerformanceRequest request) {
+        return performanceSummaryService.getSummaryForPlayers(request.getPlayers(),
+                request.getVenue(),
+                request.getType(),
+                request.getAfterDate());
+    }
 }
