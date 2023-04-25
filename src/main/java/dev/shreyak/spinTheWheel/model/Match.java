@@ -156,7 +156,7 @@ public class Match {
 
         StringBuilder sb = new StringBuilder(String.join(", ", match.info.getDates()));
         sb.append(": " + bowler);
-        sb.append("," + match.info.getVenue());
+//        sb.append("," + match.info.getVenue());
 //        sb.append(",  Balls Bowled: " + totalBallsBowled);
 //        sb.append(",  Runs Conceded: " + totalRunsConceded);
         sb.append(",W:" + totalWicketsTaken);
@@ -281,7 +281,8 @@ public class Match {
 
         StringBuilder sb = new StringBuilder(String.join(", ", match.info.getDates()));
 //        sb.append(": " + batsman + "@" + match.info.getVenue() + ",I" + inAtOver);
-        sb.append(": " + batsman + ",I" + inAtOver);
+        sb.append(": " + batsman + ",In @:" + inAtOver);
+        sb.append(",Runs:" + (totalRunsScored));
 
         sb.append(",B:" + (totalBoundaries + totalSixes) + ",SR:" + String.format("%.2f", strikeRate));
         sb.append(",D:" + (isOut ? "Out" : "Not Out"));
